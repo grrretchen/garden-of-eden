@@ -57,23 +57,32 @@ turn_on_water() {
 }
 
 # Same low-water lockout as the MQTT service, from the latest reading it
-# recorded. Exits 0 (skip watering) only when a fresh reading is below
-# WATER_LOW_CM; a missing or stale reading does not block watering, matching
-# is_water_low's "a failed reading is not low".
+# recorded in WATER_READING_FILE. Exits 0 (skip watering) only when a fresh
+# reading is past WATER_LOW_CM; a missing or stale reading, or a disabled
+# threshold, does not block watering (as in app.lib.water.is_water_low). Reads
+# the file directly: importing the app package would start the GPIO drivers.
 water_is_low() {
     "${PY}" - <<'PYEOF'
+import json
 import sys
 import time
 
 import config
-from app.lib.water import is_water_low, load_reading
 
-reading = load_reading()
-if reading is None or time.time() - reading["measured_at"] > 3 * config.WATER_CHECK_SECONDS:
+try:
+    with open(config.WATER_READING_FILE) as fh:
+        reading = json.load(fh)
+    distance = float(reading["distance"])
+    age = time.time() - float(reading["measured_at"])
+except (OSError, ValueError, KeyError, TypeError):
+    distance, age = None, None
+if not config.WATER_LOW_CM:
+    sys.exit(1)
+if distance is None or age > 3 * config.WATER_CHECK_SECONDS:
     print("WARNING: no fresh water reading; watering anyway")
     sys.exit(1)
-if is_water_low(reading["distance"], config.WATER_LOW_CM):
-    print(f"Water low ({reading['distance']:.2f}cm > {config.WATER_LOW_CM:.2f}cm); not watering")
+if distance > config.WATER_LOW_CM:
+    print(f"Water low ({distance:.2f}cm > {config.WATER_LOW_CM:.2f}cm); not watering")
     sys.exit(0)
 sys.exit(1)
 PYEOF
