@@ -72,6 +72,22 @@ class WaterLowTestCase(unittest.TestCase):
         self.assertIsNone(result)
         self.assertIsNone(self.client.last_low())
 
+    def test_published_level_is_recorded_for_the_api(self):
+        # The REST API serves the reading this loop records, so each published
+        # level must also be saved. sleep() raising ends the endless loop.
+        class Stop(Exception):
+            pass
+
+        with (
+            mock.patch.object(self.mqtt, "evaluate_water_low", return_value=13.13),
+            mock.patch.object(self.mqtt, "save_reading") as save,
+            mock.patch.object(self.mqtt, "sleep", side_effect=Stop),
+        ):
+            with self.assertRaises(Stop):
+                self.mqtt.publish_water_level(self.client)
+        save.assert_called_once_with(13.13)
+        self.assertIn(("gardyn/water/level", "13.13"), self.client.published)
+
 
 if __name__ == "__main__":
     unittest.main()

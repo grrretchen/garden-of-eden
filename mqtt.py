@@ -18,10 +18,9 @@ from app.lib import grow as grow_lib
 from app.lib import state as state_lib
 from app.lib.hardware import detect_model, get_pin_factory
 from app.lib.logging_config import configure_logging
-from app.lib.water import is_water_low
+from app.lib.water import is_water_low, save_reading
 from app.sensors.camera import camera as camera_mod
-from app.sensors.distance.distance import MeasurementError
-from app.sensors.distance.routes import distance_control
+from app.sensors.distance.distance import Distance, MeasurementError
 from app.sensors.humidity.humidity import humidity_sensor
 from app.sensors.light.routes import light_control
 from app.sensors.pcb_temp.pcb_temp import get_pcb_temperature
@@ -76,13 +75,20 @@ class MqttLogHandler(logging.Handler):
 
 
 # Reuse the singleton drivers the route modules already created at import time.
-# Importing `app` instantiates pump/light/distance on their GPIO pins; creating a
-# second copy of each here raised GPIOPinInUse and crash-looped the service.
+# Importing `app` instantiates pump/light on their GPIO pins; creating a second
+# copy of each here raised GPIOPinInUse and crash-looped the service.
 pin_factory = get_pin_factory()
 
 pump = pump_control
 light = light_control
-distance_sensor = distance_control
+
+# This service is the only owner of the distance sensor: the REST API reads the
+# readings recorded by publish_water_level instead of measuring itself.
+try:
+    distance_sensor = Distance(pin_factory=pin_factory)
+except Exception as exc:
+    logger.error("Failed to initialize Distance: %s", exc)
+    distance_sensor = None
 
 # default on brightness
 brightness = 50
@@ -248,8 +254,6 @@ def flash_lights(times=3, delay=0.3):
 
 
 def safe_distance_measure():
-    # Reuses the shared distance driver; re-instantiating would raise
-    # GPIOPinInUse against the copy the API already holds.
     if distance_sensor is None:
         return None
     try:
@@ -1009,6 +1013,7 @@ def publish_water_level(client):
         if distance is not None:
             logger.info(f"Publishing Water Level: {distance:.2f}cm")
             client.publish(BASE_TOPIC + "/water/level", f"{distance:.2f}")
+            save_reading(distance)
         sleep(WATER_CHECK_SECONDS)
 
 

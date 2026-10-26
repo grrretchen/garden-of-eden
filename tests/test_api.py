@@ -1,9 +1,14 @@
+import os
+import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
 from parameterized import parameterized
 
+import config
 from app import create_app
+from app.lib.water import save_reading
 
 
 class BaseTestCase(unittest.TestCase):
@@ -120,24 +125,53 @@ class DistanceBlueprintTestCase(BaseTestCase):
     BASE_ROUTE = "/distance"
 
     def setUp(self):
-        self.app = create_app("default")
-        self.app.config["TESTING"] = True
-        self.client = self.app.test_client()
+        super().setUp()
+        fd, self.path = tempfile.mkstemp(suffix=".json")
+        os.close(fd)
+        os.unlink(self.path)  # start with no reading
+        self._patch = patch.object(config, "WATER_READING_FILE", self.path)
+        self._patch.start()
 
-    @patch("app.sensors.distance.routes.distance_control.measure_once")
-    def test_get_distance(self, mock_measure_once):
-        # Mocking the return value of measure_once method to simulate a distance value of 55.5
-        mock_measure_once.return_value = 55.5
+    def tearDown(self):
+        self._patch.stop()
+        if os.path.exists(self.path):
+            os.unlink(self.path)
 
-        # Making a GET request to the /measure endpoint
+    def test_get_distance_reports_recorded_reading(self):
+        # The MQTT service records readings; the route only reports them.
+        save_reading(55.5, measured_at=time.time() - 10)
+
         response = self.client.get(f"{self.BASE_ROUTE}/measure")
 
-        # Asserting that the status code is 200 OK
         self.assertEqual(response.status_code, 200)
+        body = response.get_json()
+        # 55.5cm is past empty -> 0 gallons.
+        self.assertEqual(body["distance"], 55.5)
+        self.assertEqual(body["gallons"], 0.0)
+        self.assertAlmostEqual(body["age_seconds"], 10, delta=2)
 
-        # Asserting that the response JSON contains the mocked distance value
-        # plus the derived gallons estimate (55.5cm is past empty -> 0 gallons).
-        self.assertEqual(response.get_json(), {"distance": 55.5, "gallons": 0.0})
+    def test_get_distance_without_reading_is_503(self):
+        response = self.client.get(self.BASE_ROUTE)
+        self.assertEqual(response.status_code, 503)
+        self.assertIn("error", response.get_json())
+
+    def test_get_distance_refuses_stale_reading(self):
+        # Older than three check intervals: the MQTT service has stopped
+        # measuring, so the old value must not be shown as current.
+        stale = time.time() - 3 * config.WATER_CHECK_SECONDS - 5
+        save_reading(12.0, measured_at=stale)
+
+        response = self.client.get(self.BASE_ROUTE)
+
+        self.assertEqual(response.status_code, 503)
+        self.assertIn("stale", response.get_json()["error"])
+
+    def test_route_module_does_not_own_the_sensor(self):
+        # A second DistanceSensor in the API process corrupts the MQTT
+        # service's echoes; the route module must not create one.
+        from app.sensors.distance import routes
+
+        self.assertFalse(hasattr(routes, "distance_control"))
 
 
 class PCBTempBlueprintTestCase(BaseTestCase):

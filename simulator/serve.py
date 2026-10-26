@@ -8,6 +8,8 @@ placeholder image so the UI renders end to end.
 
 import base64
 import os
+import threading
+import time
 
 # Seed sim-friendly config BEFORE importing config/app (config reads env at import).
 os.environ.setdefault("SENSOR_TYPE", "DHT20")
@@ -20,6 +22,7 @@ os.makedirs(_state, exist_ok=True)
 os.environ.setdefault("STATE_FILE", os.path.join(_state, "state.json"))
 os.environ.setdefault("GROW_STATE_FILE", os.path.join(_state, "grow.json"))
 os.environ.setdefault("SCHEDULE_FILE", os.path.join(_state, "schedule.json"))
+os.environ.setdefault("WATER_READING_FILE", os.path.join(_state, "water.json"))
 
 from simulator import fake_hardware  # noqa: E402
 
@@ -27,7 +30,9 @@ fake_hardware.install()
 
 from app import create_app  # noqa: E402
 from app.lib.logging_config import configure_logging  # noqa: E402
+from app.lib.water import save_reading  # noqa: E402
 from app.sensors.camera import camera as _camera  # noqa: E402
+from app.sensors.distance.distance import Distance  # noqa: E402
 from app.sensors.schedule import schedule as _schedule  # noqa: E402
 
 # Never touch the host's real crontab in simulation — schedules are still saved
@@ -52,8 +57,19 @@ def _fake_capture(device, output_path, resolution=None):
 # Route camera capture to the placeholder (no fswebcam needed).
 _camera.capture = _fake_capture
 
+
+def _record_water_readings():
+    # On the Pi the MQTT service records tank readings for /distance; run
+    # standalone, the web simulator records its own from the fake sensor.
+    sensor = Distance()
+    while True:
+        save_reading(sensor.measure_once())
+        time.sleep(5)
+
+
 configure_logging()
 app = create_app()
+threading.Thread(target=_record_water_readings, daemon=True).start()
 
 if __name__ == "__main__":
     print("Garden of Eden simulator (web + REST) on http://localhost:5000/")

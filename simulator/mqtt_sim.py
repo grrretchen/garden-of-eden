@@ -27,6 +27,7 @@ os.makedirs(_state, exist_ok=True)
 os.environ.setdefault("STATE_FILE", os.path.join(_state, "state.json"))
 os.environ.setdefault("GROW_STATE_FILE", os.path.join(_state, "grow.json"))
 os.environ.setdefault("SCHEDULE_FILE", os.path.join(_state, "schedule.json"))
+os.environ.setdefault("WATER_READING_FILE", os.path.join(_state, "water.json"))
 
 from simulator import fake_hardware  # noqa: E402
 

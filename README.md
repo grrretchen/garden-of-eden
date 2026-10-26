@@ -58,7 +58,7 @@ See [`docs/design.md`](docs/design.md) for architecture, and
 | POST | `/pump/on` `/pump/off` | toggle pump |
 | POST/GET | `/pump/speed` | set/get pump speed |
 | GET | `/pump/stats` | INA219 power data |
-| GET | `/distance` `/distance/measure` | water-level distance (cm) |
+| GET | `/distance` `/distance/measure` | latest water-level reading recorded by the MQTT service (cm, gallons, age); 503 if none or stale |
 | GET | `/temperature` `/humidity` `/pcb-temp` | environment sensors |
 | GET | `/camera/upper` `/camera/lower` | capture a still (JPEG) |
 | GET/POST | `/schedule` | lights/pump cron schedule |
@@ -358,7 +358,7 @@ Activate python venv `source venv/bin/activate`
 Examples:
 
 ```bash
-python app/sensors/distance/distance.py
+python app/sensors/distance/distance.py   # stop mqtt.service first: two processes on the sensor corrupt each other's readings
 python app/sensors/humidity/humidity.py
 python app/sensors/light/light.py [--on] [--off] [--brightness INT%]
 python app/sensors/pcb_temp/pcb_temp.py

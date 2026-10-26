@@ -4,6 +4,38 @@ The distance sensor reports the gap (cm) from the sensor down to the water
 surface, so a *larger* distance means a *lower* tank.
 """
 
+import json
+import logging
+import time
+
+import config
+from app.lib.persist import write_json_atomic
+
+logger = logging.getLogger(__name__)
+
+
+def save_reading(distance_cm, measured_at=None):
+    """Record the latest tank reading for the REST API (MQTT service only)."""
+    reading = {
+        "distance": round(distance_cm, 2),
+        "measured_at": measured_at if measured_at is not None else time.time(),
+    }
+    try:
+        write_json_atomic(config.WATER_READING_FILE, reading)
+    except OSError as exc:
+        logger.error("Failed to save water reading: %s", exc)
+    return reading
+
+
+def load_reading():
+    """Return the latest recorded reading, or None if there is none yet."""
+    try:
+        with open(config.WATER_READING_FILE) as fh:
+            data = json.load(fh)
+        return {"distance": float(data["distance"]), "measured_at": float(data["measured_at"])}
+    except (FileNotFoundError, ValueError, KeyError, TypeError):
+        return None
+
 
 def is_water_low(distance_cm, threshold_cm):
     """Return True if the tank is low.
