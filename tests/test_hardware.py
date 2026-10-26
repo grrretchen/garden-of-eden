@@ -36,6 +36,8 @@ class SystemRouteTestCase(unittest.TestCase):
         body = resp.get_json()
         self.assertEqual(body["model"], "gardyn 3.0")
         self.assertEqual(body["profile"], config.MODELS["gardyn 3.0"])
+        # The dashboard's speed slider shows this while the pump is stopped.
+        self.assertEqual(body["default_pump_speed"], config.DEFAULT_PUMP_SPEED)
 
     @patch("app.sensors.system.routes.detect_model", return_value="gardyn 3.0 (simulated)")
     def test_profile_resolves_for_suffixed_model(self, _model):

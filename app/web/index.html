@@ -503,26 +503,48 @@
       } catch { $("meta").textContent = "offline"; conn(false); }
     }
 
+    // <img>/<video> requests can't carry the X-API-Key header, so media is
+    // fetched with the key and shown from a blob URL (revoking the old one).
+    async function loadMedia(el, path, ms) {
+      try {
+        const r = await fetchT(path + "?t=" + Date.now(), { headers: headers() }, ms || 15000);
+        if (!r.ok) return false;
+        const url = URL.createObjectURL(await r.blob());
+        if (el.src.startsWith("blob:")) URL.revokeObjectURL(el.src);
+        el.src = url; return true;
+      } catch { return false; }
+    }
     function loadCams() {
-      $("cam-upper").src = "/camera/upper?t=" + Date.now();
-      $("cam-lower").src = "/camera/lower?t=" + Date.now();
+      loadMedia($("cam-upper"), "/camera/upper");
+      loadMedia($("cam-lower"), "/camera/lower");
     }
     function toggleCamAuto() {
       if ($("cam-auto").checked) { loadCams(); camTimer = setInterval(loadCams, camInterval); }
       else { clearInterval(camTimer); camTimer = null; }
     }
     function loadTimelapses() {
-      ["upper", "lower"].forEach(c => { $("tl-" + c).src = "/camera/timelapse/" + c + "?t=" + Date.now(); });
+      ["upper", "lower"].forEach(c => loadMedia($("tl-" + c), "/camera/timelapse/" + c, 60000));
     }
     async function makeTimelapse(cam) {
       toast("Building " + cam + " timelapse… (can take a minute)");
       const r = await post("/camera/timelapse/" + cam);
-      if (r && !r.error) { const v = $("tl-" + cam); v.src = "/camera/timelapse/" + cam + "?t=" + Date.now(); v.load(); }
+      if (r && !r.error) { const v = $("tl-" + cam); if (await loadMedia(v, "/camera/timelapse/" + cam, 60000)) v.load(); }
     }
 
+    // Sliders start from the device, not the markup defaults. A stopped pump
+    // shows the speed "On" will use (DEFAULT_PUMP_SPEED).
+    function setSlider(id, v) { $(id).value = Math.round(v); lbl(id); }
     async function syncToggles() {
-      try { setActive("light", ((await get("/light/brightness")).value || 0) > 0); } catch {}
-      try { setActive("pump", ((await get("/pump/speed")).value || 0) > 0); } catch {}
+      try {
+        const b = (await get("/light/brightness")).value || 0;
+        setActive("light", b > 0); if (b > 0) setSlider("brightness", b);
+      } catch {}
+      try {
+        const sp = (await get("/pump/speed")).value || 0;
+        setActive("pump", sp > 0);
+        const d = sp > 0 ? sp : (await get("/system")).default_pump_speed;
+        if (d != null) setSlider("speed", d);
+      } catch {}
     }
 
     async function loadGrow() {
@@ -779,7 +801,7 @@
       });
     }
     function toggleSettings() { $("settings").classList.toggle("open"); $("api-key").value = API_KEY; }
-    function saveKey() { API_KEY = $("api-key").value.trim(); localStorage.setItem("garden_key", API_KEY); toast("key saved"); loadSystem(); refresh(); }
+    function saveKey() { API_KEY = $("api-key").value.trim(); localStorage.setItem("garden_key", API_KEY); toast("key saved"); loadSystem(); refresh(); loadCams(); loadTimelapses(); syncToggles(); }
 
     setupCollapsible();
     $("theme-btn").textContent = document.documentElement.dataset.theme === "dark" ? "🌙" : "☀️";

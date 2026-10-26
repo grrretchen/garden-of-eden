@@ -31,5 +31,6 @@ def get_system():
             "sensor_type": config.SENSOR_TYPE,
             "water_low_cm": config.WATER_LOW_CM,
             "pump_max_run_seconds": config.MAX_PUMP_RUN_SECONDS,
+            "default_pump_speed": config.DEFAULT_PUMP_SPEED,
         }
     )
