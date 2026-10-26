@@ -14,7 +14,6 @@ set -euo pipefail
 # Constants
 readonly TIME_DEFAULT=300    # 5 minutes in seconds
 readonly TIME_MIN=1          # 1 second
-readonly SPEED=50
 readonly WATER_BY_DEFAULT=true  # Whether to default to TIME_DEFAULT on invalid input
 
 NC=$(echo -e '\033[0m')
@@ -34,20 +33,62 @@ if [[ -z "${TIME_MAX}" && -f "${GOE_PATH}/.env" ]]; then
 fi
 readonly TIME_MAX="${TIME_MAX:-900}"
 
+readonly PY="${GOE_PATH}/venv/bin/python"
+
+# Pump speed comes from DEFAULT_PUMP_SPEED (via config.py, which reads the repo
+# .env), the same setting the REST API and MQTT service use.
+SPEED=$("${PY}" -c 'import config; print(config.DEFAULT_PUMP_SPEED)')
+readonly SPEED
+
+# Messages also go to the journal (tag garden-water): cron discards stdout.
+log() {
+    echo "$*"
+    logger -t garden-water -- "$*" 2>/dev/null || true
+}
+
 # Turn off water pump
 turn_off_water() {
-    "${GOE_PATH}/venv/bin/python" "${GOE_PATH}/app/sensors/pump/pump.py" --off
+    "${PY}" "${GOE_PATH}/app/sensors/pump/pump.py" --off
 }
 
 # Turn on water pump
 turn_on_water() {
-    "${GOE_PATH}/venv/bin/python" "${GOE_PATH}/app/sensors/pump/pump.py" --on --speed "${SPEED}"
+    "${PY}" "${GOE_PATH}/app/sensors/pump/pump.py" --on --speed "${SPEED}"
+}
+
+# Same low-water lockout as the MQTT service, from the latest reading it
+# recorded. Exits 0 (skip watering) only when a fresh reading is below
+# WATER_LOW_CM; a missing or stale reading does not block watering, matching
+# is_water_low's "a failed reading is not low".
+water_is_low() {
+    "${PY}" - <<'PYEOF'
+import sys
+import time
+
+import config
+from app.lib.water import is_water_low, load_reading
+
+reading = load_reading()
+if reading is None or time.time() - reading["measured_at"] > 3 * config.WATER_CHECK_SECONDS:
+    print("WARNING: no fresh water reading; watering anyway")
+    sys.exit(1)
+if is_water_low(reading["distance"], config.WATER_LOW_CM):
+    print(f"Water low ({reading['distance']:.2f}cm > {config.WATER_LOW_CM:.2f}cm); not watering")
+    sys.exit(0)
+sys.exit(1)
+PYEOF
 }
 
 # Function to water for a specified time, then turn off
 water_for_time() {
     local time="$1"
-	echo "Watering for ${time} seconds."
+    local msg
+    if msg=$(water_is_low); then
+        log "${msg}"
+        exit 0
+    fi
+    [[ -n "${msg}" ]] && log "${msg}"
+    log "Watering for ${time} seconds at ${SPEED}%."
     turn_on_water
     sleep "${time}"
     # turn_off_water # turn off will be caught by the exit trap.
