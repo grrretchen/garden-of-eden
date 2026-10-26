@@ -2,8 +2,11 @@ import os
 
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# Load the repo's .env wherever the caller runs from. A bare load_dotenv()
+# searches from the working directory for `python -c` and stdin scripts, so
+# bin/water.sh under cron (cwd $HOME) silently got the defaults.
+ENV_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+load_dotenv(ENV_FILE)
 
 
 def _get_bool(name, default=False):
