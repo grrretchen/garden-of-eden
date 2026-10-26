@@ -1134,12 +1134,15 @@ def publish_grow_reminders(client):
 
 
 def graceful_shutdown(signum, frame):
-    """Turn the pump off and release pigpio cleanly on SIGTERM/SIGINT (#3)."""
+    """Turn the pump off and release pigpio cleanly on SIGTERM/SIGINT (#3).
+
+    The light is left as it is: closing its pin switches the lights off, so a
+    service restart would leave the garden dark until the next command.
+    """
     logger.info("Received signal %s; shutting down gracefully", signum)
     try:
         pump.off()
         pump.close()
-        light.close()
     except Exception as exc:
         logger.error("Error during graceful shutdown: %s", exc)
     sys.exit(0)

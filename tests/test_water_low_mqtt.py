@@ -89,5 +89,23 @@ class WaterLowTestCase(unittest.TestCase):
         self.assertIn(("gardyn/water/level", "13.13"), self.client.published)
 
 
+class GracefulShutdownTestCase(unittest.TestCase):
+    def test_stops_the_pump_but_leaves_the_light(self):
+        # Closing the light's pin switches it off; a restart of the MQTT
+        # service must not leave the garden dark.
+        import mqtt
+
+        with (
+            mock.patch.object(mqtt, "pump") as pump,
+            mock.patch.object(mqtt, "light") as light,
+            self.assertRaises(SystemExit),
+        ):
+            mqtt.graceful_shutdown(15, None)
+        pump.off.assert_called_once()
+        pump.close.assert_called_once()
+        light.close.assert_not_called()
+        light.off.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()
