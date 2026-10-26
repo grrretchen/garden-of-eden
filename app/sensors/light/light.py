@@ -29,6 +29,15 @@ class GPIOController:
         else:
             raise RuntimeError("pigpio.pi client is not initialized.")
 
+    def get_duty(self):
+        """The pin's current PWM duty (0-1) in pigpiod, or 0 if it isn't
+        driving PWM (pigpio raises for a pin in another mode)."""
+        try:
+            duty = self.pi.get_PWM_dutycycle(self.pin) / self.pi.get_PWM_range(self.pin)
+        except Exception:
+            return 0
+        return max(0.0, min(1.0, float(duty)))
+
 
 class Light:
     def __init__(self, pin=config.LIGHT_PIN, frequency=config.LIGHT_FREQUENCY, pin_factory=None):
@@ -36,8 +45,13 @@ class Light:
         # Note: for docker: PiGPIOFactory(host='pigpiod', port=8888)
         self.pin = pin
         self.pin_factory = pin_factory if pin_factory else PiGPIOFactory()
-        self.led = PWMLED(self.pin, pin_factory=self.pin_factory)
         self.gpio = GPIOController(pin, pin_factory)
+        # Open the pin at its current level. PWMLED defaults to 0, which
+        # switched the lights off whenever a process started (API, MQTT, every
+        # `light` CLI call) and made ramps start from 0.
+        self.led = PWMLED(
+            self.pin, initial_value=self.gpio.get_duty(), pin_factory=self.pin_factory
+        )
         self.set_frequency(frequency)
 
     def on(self):
@@ -160,3 +174,14 @@ if __name__ == "__main__":
         light.set_brightness(args.brightness)
     else:
         logging.info("No action specified. Use --on, --off, or --brightness.")
+        raise SystemExit(0)
+
+    # Record the result like the REST API does, so a service restart restores
+    # it. Off keeps the last brightness for the next "on".
+    from app.lib import state as state_lib
+
+    level = int(round(light.get_brightness()))
+    if level > 0:
+        state_lib.save_state(light_on=True, brightness=level)
+    else:
+        state_lib.save_state(light_on=False)
