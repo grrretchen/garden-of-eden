@@ -28,6 +28,7 @@ from app.sensors.pump.routes import pump_control
 from app.sensors.schedule import schedule as sched_lib
 from app.sensors.temperature.temperature import temperature_sensor
 from config import (
+    ACTUATOR_SYNC_SECONDS,
     BASE_TOPIC,
     BROKER,
     BUTTON_PIN,
@@ -1017,6 +1018,50 @@ def publish_water_level(client):
         sleep(WATER_CHECK_SECONDS)
 
 
+def _level(device):
+    """A PWM device's level (0-100) as read from its pin. Reads the gpiozero
+    value directly: the drivers' get_* helpers log every call."""
+    return int(round(device.value * 100))
+
+
+def publish_actuator_state(client, last):
+    """Publish light/pump state where the pins differ from ``last`` (the
+    levels seen on the previous pass); return the levels seen now."""
+    global light_state, pump_state, brightness, speed
+    levels = {"light": _level(light.led), "pump": _level(pump.pump)}
+    level_topics = {"light": "light/brightness/state", "pump": "pump/speed/state"}
+    for name, level in levels.items():
+        if last.get(name) == level:
+            continue
+        client.publish(f"{BASE_TOPIC}/{name}/state", "ON" if level > 0 else "OFF")
+        if level > 0:
+            client.publish(f"{BASE_TOPIC}/{level_topics[name]}", str(level))
+    light_state, pump_state = levels["light"] > 0, levels["pump"] > 0
+    # HA's "on" uses these, so follow what the device last ran at.
+    if levels["light"] > 0:
+        brightness = levels["light"]
+    if levels["pump"] > 0:
+        speed = levels["pump"]
+    return levels
+
+
+def sync_actuator_state(client):
+    """Keep HA's light/pump entities true to the hardware, whoever changed it
+    (cron, REST API, button). Re-sends everything every 10 minutes so HA
+    recovers its state after its own restart (these topics aren't retained)."""
+    last, passes = {}, 0
+    resend_every = max(1, 600 // ACTUATOR_SYNC_SECONDS)
+    while True:
+        if passes % resend_every == 0:
+            last = {}
+        try:
+            last = publish_actuator_state(client, last)
+        except Exception:
+            logger.exception("Actuator state sync failed")
+        passes += 1
+        sleep(ACTUATOR_SYNC_SECONDS)
+
+
 def publish_images(client):
     while True:
         try:
@@ -1191,6 +1236,10 @@ if __name__ == "__main__":
     grow_thread = threading.Thread(target=publish_grow_reminders, args=(client,))
     grow_thread.daemon = True
     grow_thread.start()
+
+    actuator_thread = threading.Thread(target=sync_actuator_state, args=(client,))
+    actuator_thread.daemon = True
+    actuator_thread.start()
 
     # Restore last known actuator state after (re)connect.
     client.on_connect = lambda c, u, f, rc, properties=None: (

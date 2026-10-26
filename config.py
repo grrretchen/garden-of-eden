@@ -132,6 +132,11 @@ TANK_CAPACITY_GALLONS = _get_float("TANK_CAPACITY_GALLONS", 5)
 # low-water alert. Kept short so a transient false alarm self-clears quickly.
 WATER_CHECK_SECONDS = _get_int("WATER_CHECK_SECONDS", 180)
 
+# How often (seconds) the MQTT service reads the light and pump levels from
+# their pins and publishes any change, so HA also sees changes made by cron,
+# the REST API or the button.
+ACTUATOR_SYNC_SECONDS = _get_int("ACTUATOR_SYNC_SECONDS", 30)
+
 # ---------------------------------------------------------------------------
 # Camera
 # ---------------------------------------------------------------------------

@@ -89,6 +89,49 @@ class WaterLowTestCase(unittest.TestCase):
         self.assertIn(("gardyn/water/level", "13.13"), self.client.published)
 
 
+class ActuatorSyncTestCase(unittest.TestCase):
+    """HA must see light/pump changes made outside the MQTT service (cron)."""
+
+    @classmethod
+    def setUpClass(cls):
+        import mqtt
+
+        cls.mqtt = mqtt
+
+    def _pass(self, light, pump, last):
+        client = FakeClient()
+        with (
+            mock.patch.object(self.mqtt, "light") as L,
+            mock.patch.object(self.mqtt, "pump") as P,
+        ):
+            L.led.value, P.pump.value = light, pump
+            seen = self.mqtt.publish_actuator_state(client, last)
+        return client.published, seen
+
+    def test_first_pass_publishes_both(self):
+        published, seen = self._pass(0.3, 0, {})
+        self.assertEqual(seen, {"light": 30, "pump": 0})
+        self.assertIn(("gardyn/light/state", "ON"), published)
+        self.assertIn(("gardyn/light/brightness/state", "30"), published)
+        self.assertIn(("gardyn/pump/state", "OFF"), published)
+
+    def test_unchanged_levels_publish_nothing(self):
+        published, _ = self._pass(0.3, 0, {"light": 30, "pump": 0})
+        self.assertEqual(published, [])
+
+    def test_cron_pump_run_is_published(self):
+        published, _ = self._pass(0.3, 0.6, {"light": 30, "pump": 0})
+        self.assertEqual(
+            published, [("gardyn/pump/state", "ON"), ("gardyn/pump/speed/state", "60")]
+        )
+        self.assertEqual(self.mqtt.speed, 60)
+
+    def test_ramp_down_to_off_is_published(self):
+        published, _ = self._pass(0, 0, {"light": 30, "pump": 0})
+        self.assertEqual(published, [("gardyn/light/state", "OFF")])
+        self.assertFalse(self.mqtt.light_state)
+
+
 class GracefulShutdownTestCase(unittest.TestCase):
     def test_stops_the_pump_but_leaves_the_light(self):
         # Closing the light's pin switches it off; a restart of the MQTT
