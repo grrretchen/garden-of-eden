@@ -171,7 +171,7 @@ current = [
                 "POST",
                 "/pump/on",
                 PUMP
-                + " Runs at **100 %** (upstream behaviour), with the MAX_PUMP_RUN_SECONDS safety cut-off.",
+                + " Runs at DEFAULT_PUMP_SPEED (upstream: 100 %), with the MAX_PUMP_RUN_SECONDS safety cut-off.",
             ),
             req("Pump off", "POST", "/pump/off", "Stops the pump."),
             req(
@@ -179,16 +179,15 @@ current = [
                 "POST",
                 "/pump/run",
                 PUMP
-                + " Runs at **100 %** for `seconds` (1–MAX_PUMP_RUN_SECONDS; default is the cap, 900). Returns at once.",
+                + " Runs at DEFAULT_PUMP_SPEED (upstream: 100 %) for `seconds` (1–MAX_PUMP_RUN_SECONDS; default is the cap, 900). Returns at once.",
                 body={"seconds": 10},
             ),
             req(
                 "Pump power stats",
                 "GET",
                 "/pump/stats",
-                "INA219 readings. **Broken on the Zero 2 W** (503: pi-ina219 can't find the I2C bus).",
+                "INA219 readings (bus V, mA, mW, shunt mV), read on I2C bus 1. Takes about 1 s.",
                 ex="pump_stats",
-                test=503,
             ),
         ],
     ),

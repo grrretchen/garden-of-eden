@@ -733,7 +733,7 @@
                     "on"
                   ]
                 },
-                "description": "⚠ Runs the real pump. Only with water in the tank. Runs at **100 %** (upstream behaviour), with the MAX_PUMP_RUN_SECONDS safety cut-off."
+                "description": "⚠ Runs the real pump. Only with water in the tank. Runs at DEFAULT_PUMP_SPEED (upstream: 100 %), with the MAX_PUMP_RUN_SECONDS safety cut-off."
               },
               "event": [
                 {
@@ -798,7 +798,7 @@
                     "run"
                   ]
                 },
-                "description": "⚠ Runs the real pump. Only with water in the tank. Runs at **100 %** for `seconds` (1–MAX_PUMP_RUN_SECONDS; default is the cap, 900). Returns at once.",
+                "description": "⚠ Runs the real pump. Only with water in the tank. Runs at DEFAULT_PUMP_SPEED (upstream: 100 %) for `seconds` (1–MAX_PUMP_RUN_SECONDS; default is the cap, 900). Returns at once.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"seconds\": 10\n}",
@@ -837,7 +837,7 @@
                     "stats"
                   ]
                 },
-                "description": "INA219 readings. **Broken on the Zero 2 W** (503: pi-ina219 can't find the I2C bus)."
+                "description": "INA219 readings (bus V, mA, mW, shunt mV), read on I2C bus 1. Takes about 1 s."
               },
               "event": [
                 {
@@ -845,14 +845,14 @@
                   "script": {
                     "type": "text/javascript",
                     "exec": [
-                      "pm.test(\"status 503\", () => pm.response.to.have.status(503));"
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
                     ]
                   }
                 }
               ],
               "response": [
                 {
-                  "name": "gardyn_home3 2026-10-27 (503)",
+                  "name": "gardyn_home3 2026-10-27 (200)",
                   "originalRequest": {
                     "method": "GET",
                     "header": [],
@@ -866,10 +866,10 @@
                         "stats"
                       ]
                     },
-                    "description": "INA219 readings. **Broken on the Zero 2 W** (503: pi-ina219 can't find the I2C bus)."
+                    "description": "INA219 readings (bus V, mA, mW, shunt mV), read on I2C bus 1. Takes about 1 s."
                   },
-                  "status": "Error",
-                  "code": 503,
+                  "status": "OK",
+                  "code": 200,
                   "_postman_previewlanguage": "json",
                   "header": [
                     {
@@ -877,7 +877,7 @@
                       "value": "application/json"
                     }
                   ],
-                  "body": "{\n  \"error\": \"Pump hardware unavailable: Could not determine default I2C bus for platform.\"\n}"
+                  "body": "{\n  \"BusCurrent\": 0.12195121951219512,\n  \"BusVoltage\": 12.504,\n  \"Power\": 3.048780487804878,\n  \"ShuntVoltage\": 0.01\n}"
                 }
               ]
             }
