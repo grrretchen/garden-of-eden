@@ -3,10 +3,10 @@
 `garden-of-eden.postman_collection.json` describes the REST API served by this fork
 (branch `gardyn-home3`), with example responses captured from a Gardyn Home 3.0.
 
-- **v1 current**: what the device serves today. Requests marked ⚠ drive real hardware
+- **v1**: the API the device serves today. Requests marked ⚠ drive real hardware
   (pump, lights).
-- **Proposed (next version)**: planned endpoints, which return 404 until implemented. See
-  the schedule/presets/plants proposal in the `code.gardyn` repo.
+- **v2**: the planned changes, which return 404 until implemented. See the
+  schedule/presets/plants proposal in the `code.gardyn` repo.
 
 ## Use
 

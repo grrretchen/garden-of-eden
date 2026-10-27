@@ -115,7 +115,7 @@ current = [
     ]),
 ]
 
-P = "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. "
+P = "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. "
 preset = {"name": "Early Germinate", "description": "Germinate an hour earlier; off by 20:00", "stage": "germinate",
           "every_day": True,
           "lights": {"days": {"mon": [{"onTime": "05:00", "offTime": "20:00", "brightness": 30, "rampMinutes": 15}]}},
@@ -158,8 +158,8 @@ collection = {
             "branch `gardyn-home3`, generated against commit b0413fa (2026-10-27).\n\n"
             "**Auth:** with GARDEN_API_KEY set, every request except `/`, `/health` and `/static` needs the "
             "`X-API-Key` header (collection auth uses `{{apiKey}}`). Requests from the Pi itself skip the check.\n\n"
-            "**Folders:** `v1 current` is what the device serves today. `Proposed` holds the planned endpoints "
-            "(404 today), for planning the next version.\n\n"
+            "**Folders:** `v1` is the API the device serves today. `v2` holds the planned changes "
+            "(404 until implemented).\n\n"
             "⚠ Requests in Pump and some in Light change real hardware."
         ),
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -169,8 +169,8 @@ collection = {
         {"key": "value", "value": "{{apiKey}}", "type": "string"},
         {"key": "in", "value": "header", "type": "string"}]},
     "variable": [{"key": "baseUrl", "value": "http://gardyn.lan:5000"}],
-    "item": [folder("v1 current (b0413fa)", "What the device serves today.", current),
-             folder("Proposed (next version)", P, proposed)],
+    "item": [folder("v1", "The API the device serves today (fork commit b0413fa).", current),
+             folder("v2", P, proposed)],
 }
 environment = {
     "id": uid("env"), "name": "gardyn.lan", "_postman_variable_scope": "environment",
@@ -181,4 +181,4 @@ os.makedirs(OUT, exist_ok=True)
 json.dump(collection, open(os.path.join(OUT, "garden-of-eden.postman_collection.json"), "w"), indent=2, ensure_ascii=False)
 json.dump(environment, open(os.path.join(OUT, "gardyn-lan.postman_environment.json"), "w"), indent=2)
 n = lambda items: sum(n(i["item"]) if "item" in i else 1 for i in items)
-print("requests:", n(collection["item"][0]["item"]), "current,", n(collection["item"][1]["item"]), "proposed")
+print("requests:", n(collection["item"][0]["item"]), "v1,", n(collection["item"][1]["item"]), "v2")
