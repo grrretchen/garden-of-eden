@@ -18,9 +18,10 @@ class TestPump(unittest.TestCase):
         self.mock_pi = MockPi()
         self.pump = Pump(24)
 
-    def test_on(self):
+    @patch("app.sensors.pump.pump.config.DEFAULT_PUMP_SPEED", 60)
+    def test_on_uses_default_speed(self):
         self.pump.on()
-        self.assertEqual(self.mock_pwm_pump.value, 1)
+        self.assertEqual(self.mock_pwm_pump.value, 0.6)
 
     def test_off(self):
         self.pump.off()

@@ -33,6 +33,7 @@ from config import (
     BROKER,
     BUTTON_PIN,
     CAMERA_RESOLUTION,
+    DEFAULT_PUMP_SPEED,
     IDENTIFIER,
     IMAGE_INTERVAL_SECONDS,
     KEEP_ALIVE_INTERVAL,
@@ -93,7 +94,7 @@ except Exception as exc:
 
 # default on brightness
 brightness = 50
-speed = 100
+speed = DEFAULT_PUMP_SPEED
 sec_per_min = 60
 min_per_hr = 60
 

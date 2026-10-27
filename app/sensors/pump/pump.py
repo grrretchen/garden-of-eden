@@ -40,10 +40,10 @@ class Pump:
 
     def on(self):
         """
-        Turn pump on. Default to 30 percent duty.
+        Turn pump on at DEFAULT_PUMP_SPEED (the same speed the schedule uses).
         """
         print("Turning pump on")
-        self.pump.value = 1
+        self.set_speed(config.DEFAULT_PUMP_SPEED)
 
     def off(self):
         """
