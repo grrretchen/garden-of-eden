@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "cb509df7-368b-531e-aa58-3be16959eee8",
     "name": "garden-of-eden API (gardyn-home3)",
-    "description": "REST API of the garden-of-eden firmware on the Gardyn Home 3.0, fork `grrretchen/garden-of-eden` branch `gardyn-home3`, generated against commit b0413fa (2026-10-27).\n\n**Auth:** with GARDEN_API_KEY set, every request except `/`, `/health` and `/static` needs the `X-API-Key` header (collection auth uses `{{apiKey}}`). Requests from the Pi itself skip the check.\n\n**Folders:** `v1` is the API the device serves today. `v2` holds the planned changes (404 until implemented).\n\n⚠ Requests in Pump and some in Light change real hardware.",
+    "description": "REST API of the garden-of-eden firmware on the Gardyn Home 3.0, fork `grrretchen/garden-of-eden` branch `gardyn-home3`, generated against commit b0413fa (2026-10-27).\n\n**Auth:** with GARDEN_API_KEY set, every request except `/`, `/health` and `/static` needs the `X-API-Key` header (collection auth uses `{{apiKey}}`). Requests from the Pi itself skip the check.\n\n**Folders:** `v1` is the API the device serves today. `v2` holds the planned changes (on v1 firmware: 404, except `PATCH /pods/{id}` 405, and \"Set schedule (If-Match)\", which v1 accepts and applies).\n\n⚠ Requests in Pump and some in Light change real hardware.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -694,7 +694,7 @@
                     "speed"
                   ]
                 },
-                "description": "⚠ Runs the real pump. Only with water in the tank. Starts the pump at `value` %.",
+                "description": "⚠ Runs the real pump. Only with water in the tank. Starts the pump at `value` % (0 stops it) and arms the MAX_PUMP_RUN_SECONDS safety cut-off.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"value\": 60\n}",
@@ -1258,7 +1258,7 @@
                     "25"
                   ]
                 },
-                "description": "Name and/or symbols for one pod; returns all pods.",
+                "description": "Name and/or symbols for one pod; returns all pods. A pod id outside 1–POD_COUNT is silently ignored (no 404).",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"name\": \"Cecelia Lettuce\",\n  \"symbols\": [\n    \"circle\",\n    \"square\"\n  ]\n}",
@@ -1438,16 +1438,16 @@
     {
       "id": "4844d265-c724-51c8-8ded-6ad944d87004",
       "name": "v2",
-      "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. ",
+      "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. On v1 firmware these return 404, except `PATCH /pods/{id}` (405) and \"Set schedule (If-Match)\", which v1 accepts and applies.",
       "item": [
         {
           "id": "196e5887-0d3a-5405-8c95-0a70b8641313",
           "name": "1. Schedule revisions (two editors)",
-          "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Adds `meta` {revision, updated_at, updated_by, preset_id, modified} to GET /schedule; MQTT retained `gardyn/schedule/state`.",
+          "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Adds `meta` {revision, updated_at, updated_by, preset_id, modified} to GET /schedule; MQTT retained `gardyn/schedule/state`.",
           "item": [
             {
-              "id": "32743f8f-2283-546c-94eb-694b1b55b59e",
-              "name": "Set schedule (If-Match)",
+              "id": "8a68d892-9184-5895-85eb-fa764d1483d9",
+              "name": "⚠ Set schedule (If-Match), applies on v1",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1473,7 +1473,7 @@
                     "schedule"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Same body as today plus headers. A stale `If-Match` revision returns 409 with the current schedule. `X-Client` is recorded as `meta.updated_by`.",
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. **⚠ On v1 firmware this is the v1 `POST /schedule`: the headers are ignored and the body is applied (200).** Same body as today plus headers. A stale `If-Match` revision returns 409 with the current schedule. `X-Client` is recorded as `meta.updated_by`.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"lights\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"mon\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sat\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sun\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"thu\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"tue\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"wed\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"pump\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"mon\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sat\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sun\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"thu\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"tue\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"wed\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"vacation\": {\n    \"enabled\": false,\n    \"until\": \"2026-11-09\"\n  }\n}",
@@ -1510,7 +1510,7 @@
                     "lights"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Change one section without resending the rest.",
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Change one section without resending the rest.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"days\": {\n    \"mon\": [\n      {\n        \"onTime\": \"05:00\",\n        \"offTime\": \"20:00\",\n        \"brightness\": 30,\n        \"rampMinutes\": 15\n      }\n    ]\n  }\n}",
@@ -1527,7 +1527,7 @@
         {
           "id": "4d7cbf5a-4cf0-5735-a4de-ffc7f1af2c0e",
           "name": "2. Presets",
-          "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Built-ins move from the page's JS into app/lib/presets.json (read-only); custom presets in ~/.garden_presets.json. Responses include photoperiod_h, boost_equivalent_h, dark_h, pump_min_per_day.",
+          "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Built-ins move from the page's JS into app/lib/presets.json (read-only); custom presets in ~/.garden_presets.json. Responses include photoperiod_h, boost_equivalent_h, dark_h, pump_min_per_day.",
           "item": [
             {
               "id": "0d862b50-b331-59a5-bcf3-9bb3f897808f",
@@ -1545,7 +1545,7 @@
                     "presets"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. "
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. "
               }
             },
             {
@@ -1569,7 +1569,7 @@
                     "presets"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Or `{\"from_current\": true, \"name\": ...}` to save the active schedule.",
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Or `{\"from_current\": true, \"name\": ...}` to save the active schedule.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"name\": \"Early Germinate\",\n  \"description\": \"Germinate an hour earlier; off by 20:00\",\n  \"stage\": \"germinate\",\n  \"every_day\": true,\n  \"lights\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"onTime\": \"05:00\",\n          \"offTime\": \"20:00\",\n          \"brightness\": 30,\n          \"rampMinutes\": 15\n        }\n      ]\n    }\n  },\n  \"pump\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"time\": \"05:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"12:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"19:00\",\n          \"duration\": 3\n        }\n      ]\n    }\n  }\n}",
@@ -1603,7 +1603,7 @@
                     "custom-early-germinate"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. 403 for built-ins.",
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. 403 for built-ins.",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"name\": \"Early Germinate\",\n  \"description\": \"Germinate an hour earlier; off by 20:00\",\n  \"stage\": \"germinate\",\n  \"every_day\": true,\n  \"lights\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"onTime\": \"05:00\",\n          \"offTime\": \"20:00\",\n          \"brightness\": 30,\n          \"rampMinutes\": 15\n        }\n      ]\n    }\n  },\n  \"pump\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"time\": \"05:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"12:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"19:00\",\n          \"duration\": 3\n        }\n      ]\n    }\n  }\n}",
@@ -1632,7 +1632,7 @@
                     "custom-early-germinate"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. 403 for built-ins."
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. 403 for built-ins."
               }
             },
             {
@@ -1658,7 +1658,7 @@
                     "apply"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Sets meta.preset_id and modified=false."
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Sets meta.preset_id and modified=false."
               }
             },
             {
@@ -1676,7 +1676,7 @@
                     "schedule.ics"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Read-only: next 14 days of light windows and pump runs as VEVENTs, for calendar display."
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Read-only: next 14 days of light windows and pump runs as VEVENTs, for calendar display."
               }
             }
           ]
@@ -1684,7 +1684,7 @@
         {
           "id": "c6c36b57-db6d-5dfb-b200-8461ae58c411",
           "name": "3. Plants and pods",
-          "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. plants.json entries gain optional plant_code, source, source_url, scientific_name, family, harvest_style, light_zone, weeks{}, needs_review. A local overlay (~/.garden_plants.json) from the CropOps PlantAttributes export is merged over the bundled catalog.",
+          "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. plants.json entries gain optional plant_code, source, source_url, scientific_name, family, harvest_style, light_zone, weeks{}, needs_review. A local overlay (~/.garden_plants.json) from the CropOps PlantAttributes export is merged over the bundled catalog.",
           "item": [
             {
               "id": "34f9be43-94b7-5fee-b28e-ee3c7a10c9ad",
@@ -1701,7 +1701,7 @@
                     "plants"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Each entry tagged origin: bundled | local."
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Each entry tagged origin: bundled | local."
               }
             },
             {
@@ -1725,7 +1725,7 @@
                     "local"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Written by the CropOps export (the Sheet is the master).",
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Written by the CropOps export (the Sheet is the master).",
                 "body": {
                   "mode": "raw",
                   "raw": "[\n  {\n    \"plant_code\": \"cecelia_lettuce\",\n    \"name\": \"Cecelia Lettuce\",\n    \"category\": \"lettuce\",\n    \"source\": \"johnnys\",\n    \"scientific_name\": \"Lactuca sativa\",\n    \"family\": \"Asteraceae\",\n    \"harvest_style\": \"cut_and_come_again\",\n    \"light_zone\": \"medium\",\n    \"weeks\": {\n      \"germinate\": 1,\n      \"thin\": 2,\n      \"maturity\": 6,\n      \"harvest\": 6,\n      \"replace\": 9,\n      \"retire\": 12\n    },\n    \"needs_review\": true\n  }\n]",
@@ -1758,7 +1758,7 @@
                     "25"
                   ]
                 },
-                "description": "**v2, not implemented yet: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Partial update; new optional fields.",
+                "description": "**v2, not implemented yet.** See code.gardyn docs/proposal-schedules-presets-plants.md. Partial update; new optional fields. On v1 firmware: 405 (only POST exists on this path).",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"plant_code\": \"cecelia_lettuce\",\n  \"sown_on\": \"2026-10-26\",\n  \"slot_code\": \"C3.4\"\n}",
