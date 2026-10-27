@@ -372,8 +372,10 @@ StartLimitIntervalSec=0
 User=$USER
 WorkingDirectory=$INSTALL_DIR
 # Wait (up to 60s) for pigpiod to accept connections before starting, so the
-# service doesn't crash-restart during the boot race.
-ExecStartPre=/bin/bash -c 'for i in \$(seq 1 60); do (echo > /dev/tcp/127.0.0.1/8888) >/dev/null 2>&1 && exit 0; sleep 1; done; exit 0'
+# service doesn't crash-restart during the boot race. Probe "localhost", not
+# 127.0.0.1: pigpiod -l listens on [::1] only, so an IPv4 probe never
+# connects and every boot waited the full 60s.
+ExecStartPre=/bin/bash -c 'for i in \$(seq 1 60); do (echo > /dev/tcp/localhost/8888) >/dev/null 2>&1 && exit 0; sleep 1; done; exit 0'
 ExecStart=$INSTALL_DIR/venv/bin/python $INSTALL_DIR/mqtt.py
 Restart=always
 RestartSec=5
