@@ -63,6 +63,7 @@ See [`docs/design.md`](docs/design.md) for architecture, and
 | GET | `/camera/upper` `/camera/lower` | capture a still (JPEG) |
 | GET/POST | `/schedule` | lights/pump cron schedule |
 | GET | `/grow` · POST `/grow/start` `/grow/stage` `/grow/acknowledge` | grow-cycle |
+| GET/POST | `/pods` · POST `/pods/<id>` | per-pod plant names and shape codes, plus the plant catalog: bundled `app/lib/plants.json`, then valid entries from the optional `PLANTS_CUSTOM_FILE` (default `app/lib/plants-custom.json`). Bundled names win; skipped custom entries are listed in `catalog_problems` |
 | GET | `/system` | identity, version, detected model/profile |
 
 ### Run with Docker

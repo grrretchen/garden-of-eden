@@ -1177,7 +1177,7 @@
         {
           "id": "0b76adc4-7dd5-580c-b571-ca4a80152381",
           "name": "Pods",
-          "description": "Per-pod name and shape code, plus the bundled plant catalog (app/lib/plants.json).",
+          "description": "Per-pod name and shape code, plus the plant catalog: bundled app/lib/plants.json, then valid entries from the optional custom file (PLANTS_CUSTOM_FILE, default app/lib/plants-custom.json).",
           "item": [
             {
               "id": "6aef10c2-db1e-5432-941c-24ac275018e7",
@@ -1194,7 +1194,7 @@
                     "pods"
                   ]
                 },
-                "description": "`pods` (30), `shapes`, `catalog` (108 entries; example trimmed to 2)."
+                "description": "`pods` (30), `shapes`, `catalog` (108 bundled entries, then valid custom ones; example trimmed to 2), `catalog_problems` (skipped custom entries and why; [] when clean)."
               },
               "event": [
                 {
@@ -1222,7 +1222,7 @@
                         "pods"
                       ]
                     },
-                    "description": "`pods` (30), `shapes`, `catalog` (108 entries; example trimmed to 2)."
+                    "description": "`pods` (30), `shapes`, `catalog` (108 bundled entries, then valid custom ones; example trimmed to 2), `catalog_problems` (skipped custom entries and why; [] when clean)."
                   },
                   "status": "OK",
                   "code": 200,

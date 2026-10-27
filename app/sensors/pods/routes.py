@@ -11,11 +11,14 @@ pods_blueprint = Blueprint("pods", __name__)
 
 @pods_blueprint.route("", methods=["GET"])
 def get_pods():
+    catalog, problems = pods_lib.load_catalog_with_problems()
     return jsonify(
         {
             "pods": pods_lib.load_pods(),
             "shapes": pods_lib.SHAPES,
-            "catalog": pods_lib.load_catalog(),
+            "catalog": catalog,
+            # Custom catalog entries that were skipped, and why ([] when clean).
+            "catalog_problems": problems,
         }
     )
 

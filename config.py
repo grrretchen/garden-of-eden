@@ -174,6 +174,16 @@ WATER_READING_FILE = os.path.expanduser(os.getenv("WATER_READING_FILE", "~/.gard
 # Per-pod plant tracking (name + shape code). POD_COUNT pods (Gardyn Home = 30).
 POD_COUNT = _get_int("POD_COUNT", 30)
 PODS_FILE = os.path.expanduser(os.getenv("PODS_FILE", "~/.garden_pods.json"))
+# Optional extra plant varieties, merged after the bundled app/lib/plants.json
+# catalog (same six-field entries). Missing file = bundled catalog only.
+PLANTS_CUSTOM_FILE = os.path.expanduser(
+    os.getenv(
+        "PLANTS_CUSTOM_FILE",
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "app", "lib", "plants-custom.json"
+        ),
+    )
+)
 
 # ---------------------------------------------------------------------------
 # Grow-cycle & notifications

@@ -1,0 +1,442 @@
+[
+  {
+    "name": "Little Shanghai Bok Choy",
+    "category": "brassica/kale",
+    "days_to_harvest": "37",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Mini pac choi; thin to one plant and keep cool. Cut the compact head or harvest outer stalks while the center keeps growing."
+  },
+  {
+    "name": "Benary's Giant Mix Zinnia",
+    "category": "flower",
+    "days_to_harvest": "75-90",
+    "light_need": "high",
+    "difficulty": "medium",
+    "guide": "Tall cut-flower mix; give high light and room for branching. Cut blooms just before fully open; move outdoors if it crowds the tower."
+  },
+  {
+    "name": "Black Viola",
+    "category": "flower",
+    "days_to_harvest": "50",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Compact dark blooms; keep cool and deadhead fading flowers to renew buds. Pick open flowers for garnish; leave seeds covered to germinate."
+  },
+  {
+    "name": "Blush Hibiscus",
+    "category": "flower",
+    "days_to_harvest": "100-130",
+    "light_need": "medium",
+    "difficulty": "hard",
+    "guide": "Large, slow blooms; support tall stems and trim roots twice monthly. Remove faded flowers and pick young leaves or freshly opened blooms."
+  },
+  {
+    "name": "Cheyenne Spirit Echinacea",
+    "category": "flower",
+    "days_to_harvest": "126-165",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Tall, slow perennial; give high light and room or transplant outdoors. Cut open blooms for flowers; indoor Gardyn performance is unverified."
+  },
+  {
+    "name": "Durango Outback Mix Marigold",
+    "category": "flower",
+    "days_to_harvest": "50",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Compact French marigold; deadhead spent blooms to keep buds coming. Pick open flowers and remove petals from the bitter flower base."
+  },
+  {
+    "name": "Fiesta Gitana",
+    "category": "flower",
+    "days_to_harvest": "50-60",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Dwarf calendula; pinch tall shoots and remove spent flowers with their bare stems. Cut half-open blooms or pick fresh petals for garnish."
+  },
+  {
+    "name": "Flashback Mix Calendula",
+    "category": "flower",
+    "days_to_harvest": "50-55",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Edible calendula mix; deadhead spent flowers and pinch tips to keep it bushy. Pick fresh petals or cut partly open blooms for arrangements."
+  },
+  {
+    "name": "Fuchsia Snapdragon",
+    "category": "flower",
+    "days_to_harvest": "80-115",
+    "light_need": "high",
+    "difficulty": "medium",
+    "guide": "Fuchsia flower spikes; give high light and remove spent blooms to renew buds. Cut stems above a leaf node, leaving a third of the plant."
+  },
+  {
+    "name": "Night-Scented Stock",
+    "category": "flower",
+    "days_to_harvest": "50-70",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Evening-scented blooms; deadhead flowers and remove the bare stems. Cut stalks as flowers start opening and place them in water promptly."
+  },
+  {
+    "name": "Oopsy Daisy",
+    "category": "flower",
+    "days_to_harvest": "50-55",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Calendula with pale, orange-tipped blooms; pinch tips and deadhead bare stems. Cut partly open flowers or pick petals before they fade."
+  },
+  {
+    "name": "Pink Petunia",
+    "category": "flower",
+    "days_to_harvest": "30-40",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Pink ornamental blooms; deadhead and shorten trailing stems while leaving a third. Keep roots trimmed; flowers are not edible."
+  },
+  {
+    "name": "Purple Petunia",
+    "category": "flower",
+    "days_to_harvest": "30-40",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Purple ornamental blooms; deadhead and shorten trailing stems while leaving a third. Keep roots trimmed; flowers are not edible."
+  },
+  {
+    "name": "Radio Calendula",
+    "category": "flower",
+    "days_to_harvest": "50-55",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Orange calendula blooms; pinch tall stalks and deadhead flowers with their bare stems. Cut half-open blossoms or pick petals while fresh."
+  },
+  {
+    "name": "Scarlet Snapdragon",
+    "category": "flower",
+    "days_to_harvest": "80-115",
+    "light_need": "high",
+    "difficulty": "medium",
+    "guide": "Scarlet flower spikes; give high light and remove spent blooms. Cut stems above a leaf node, leaving a third of the plant to regrow."
+  },
+  {
+    "name": "Trailing Nasturtium Mix",
+    "category": "flower",
+    "days_to_harvest": "55-65",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Long trailing vines; give room or train them away from neighboring plants. Pick young leaves and open flowers, and trim vines to limit spread."
+  },
+  {
+    "name": "Violet Impatiens",
+    "category": "flower",
+    "days_to_harvest": "60-75",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Violet ornamental blooms; keep cool and remove spent flowers. Cut back leggy stems while leaving a third of the plant for another flush."
+  },
+  {
+    "name": "White Petunia",
+    "category": "flower",
+    "days_to_harvest": "30-40",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "White ornamental blooms; deadhead and shorten trailing stems while leaving a third. Keep roots trimmed; flowers are not edible."
+  },
+  {
+    "name": "Yellow Snapdragon",
+    "category": "flower",
+    "days_to_harvest": "80-115",
+    "light_need": "high",
+    "difficulty": "medium",
+    "guide": "Yellow flower spikes; give high light and remove spent blooms. Cut stems above a leaf node, leaving a third of the plant to regrow."
+  },
+  {
+    "name": "Bare Root Strawberries",
+    "category": "fruiting",
+    "days_to_harvest": "60-90",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Established crowns; plant promptly in high light and hand-pollinate flowers. Remove runners and pick ripe berries; avoid germination mode."
+  },
+  {
+    "name": "Black Pearl Pepper",
+    "category": "fruiting",
+    "days_to_harvest": "140-175",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Dark-leaved ornamental pepper; give high light and warmth, and hand-pollinate flowers. Trim to fit; the small fruit turns red and is hot."
+  },
+  {
+    "name": "Burrito Pepper",
+    "category": "fruiting",
+    "days_to_harvest": "80-95",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Compact hot pepper; give high light and hand-pollinate after removing the first buds. Support fruiting stems and cut firm peppers at the stem."
+  },
+  {
+    "name": "Candy Cane Pepper",
+    "category": "fruiting",
+    "days_to_harvest": "85-100",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Striped sweet pepper; give high light and hand-pollinate after the first buds are removed. Cut firm fruit green-striped or let it ripen red."
+  },
+  {
+    "name": "Fairytale Eggplant",
+    "category": "fruiting",
+    "days_to_harvest": "65-85",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Compact striped eggplant; give high light, hand-pollinate flowers, and support fruiting stems. Cut fruit while the skin is glossy."
+  },
+  {
+    "name": "Goliath Pepper",
+    "category": "fruiting",
+    "days_to_harvest": "90-100",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Large sweet pepper; give high light, hand-pollinate flowers, and support heavy fruit. Cut firm peppers green or let them ripen golden."
+  },
+  {
+    "name": "Purple Beans",
+    "category": "fruiting",
+    "days_to_harvest": "50-75",
+    "light_need": "high",
+    "difficulty": "hard",
+    "guide": "Purple bush beans; support stems and help flowers pollinate with a gentle shake. Pick tender pods before seeds swell to prolong production."
+  },
+  {
+    "name": "Super Sugar Snap Pea",
+    "category": "fruiting",
+    "days_to_harvest": "61",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Tall snap-pea vine; provide strong support and keep it cool. Pick plump pods before seeds become starchy; allow room or transplant outdoors."
+  },
+  {
+    "name": "Yellow Beans",
+    "category": "fruiting",
+    "days_to_harvest": "68",
+    "light_need": "high",
+    "difficulty": "easy",
+    "guide": "Compact wax beans; give high light and support fruiting stems. Pick tender yellow pods before seeds swell, harvesting often to keep them coming."
+  },
+  {
+    "name": "Bouquet Dill",
+    "category": "herb",
+    "days_to_harvest": "40-45",
+    "light_need": "low",
+    "difficulty": "easy",
+    "guide": "Early-flowering dill; snip leafy stems before buds open for the longest leaf harvest. Trim tall growth, or leave umbels to mature for seed."
+  },
+  {
+    "name": "Doron Prospera Basil",
+    "category": "herb",
+    "days_to_harvest": "74",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Purple Genovese-type basil; pinch above leaf pairs and remove flower buds. Harvest upper stems regularly while leaving enough foliage to regrow."
+  },
+  {
+    "name": "Giant of Italy Parsley",
+    "category": "herb",
+    "days_to_harvest": "75",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Large flat-leaf parsley; allow time for slow germination. Cut mature outer stems at the base and leave the center to keep producing."
+  },
+  {
+    "name": "Greek Oregano",
+    "category": "herb",
+    "days_to_harvest": "80-90",
+    "light_need": "low",
+    "difficulty": "easy",
+    "guide": "Pungent oregano; pinch stem tips to encourage branching. Snip established leafy sprigs before flowering and leave enough growth to recover."
+  },
+  {
+    "name": "Kapoor Tulsi (Holy Basil)",
+    "category": "herb",
+    "days_to_harvest": "60",
+    "light_need": "high",
+    "difficulty": "easy",
+    "guide": "Bushy tulsi; give bright light and pinch stem tips to encourage branching. Snip leafy sprigs and remove flower buds to extend leaf harvest."
+  },
+  {
+    "name": "Mammoth Basil",
+    "category": "herb",
+    "days_to_harvest": "55-65",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Large, ruffled basil leaves; pinch stems above leaf pairs and remove flower buds. Harvest upper growth often to encourage branching."
+  },
+  {
+    "name": "Summer Thyme",
+    "category": "herb",
+    "days_to_harvest": "90-95",
+    "light_need": "low",
+    "difficulty": "medium",
+    "guide": "Tender-stemmed thyme; allow time for establishment and pinch tips for branching. Snip leafy sprigs sparingly while young, then harvest regularly."
+  },
+  {
+    "name": "Allstar Gourmet Lettuce Mix",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "28",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Single-species lettuce mix; keep cool and cut baby leaves above the growing point. Leave the centers intact for another flush."
+  },
+  {
+    "name": "Breen Lettuce",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "45",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Compact red romaine; keep cool and harvest outer leaves while leaving the center. Cut the whole head at maturity for a single harvest."
+  },
+  {
+    "name": "Bright Lights Swiss Chard",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "55",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Multicolored chard; harvest outer stalks at the base and leave the crown intact. Pick young leaves for tenderness and check roots monthly."
+  },
+  {
+    "name": "Bronze Arrow Lettuce",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "45",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Bronze-tinted leaf lettuce; keep cool and snip outer leaves once established. Leave the center growing or cut the whole head at maturity."
+  },
+  {
+    "name": "Cardinale",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "60",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Red lettuce that forms a crisp head; keep cool to delay bolting. Pick outer leaves while leaving the center, or cut the mature head at its base."
+  },
+  {
+    "name": "Cecelia Lettuce",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "55",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Compact green butterhead; keep cool and harvest outer leaves or the full head. Listed head-maturity days start at transplant, not sowing."
+  },
+  {
+    "name": "Flashy Trout Back Lettuce",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "27-55",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Speckled romaine; keep cool and harvest outer leaves while the center regrows. Cut the mature head at its base; red leaf spots are normal."
+  },
+  {
+    "name": "Green Mustard",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "21-40",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Mizuna-type mustard; keep cool and cut young outer leaves while leaving the center. Remove flower stems and check vigorous roots twice monthly."
+  },
+  {
+    "name": "Matilda",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "52",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Green butter-textured lettuce; keep cool and harvest outer leaves while leaving the center. Cut the full head at maturity and trim roots monthly."
+  },
+  {
+    "name": "Monte Carlo Lettuce",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "46",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Compact romaine; keep cool and snip outer leaves above the base for repeat harvests. Cut the full head at maturity and leave room for airflow."
+  },
+  {
+    "name": "Pink Celery",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "75-100",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Pink-stemmed celery; allow for slow early growth. Cut larger outer stalks at the base and leave a third of the plant to continue producing."
+  },
+  {
+    "name": "Pink Swiss Chard",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "32-60",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Pink-stemmed chard; cut outer leaves and stalks at their base, leaving the crown intact. Pick young for tenderness and check roots monthly."
+  },
+  {
+    "name": "Red Lace Mustard",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "10-14",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Cut nursery microgreens above the seed pad; cut seedlings will not regrow. For baby greens, transfer uncut plants once roots reach 2 inches."
+  },
+  {
+    "name": "Red Mustard",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "21-45",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Red mustard leaves; keep cool and harvest young outer leaves for a milder flavor. Leave the center growing and remove flower stems as they appear."
+  },
+  {
+    "name": "Rouge d'Hiver",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "30-50",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Cold-tolerant red romaine; keep cool and harvest outer leaves while leaving the center. Cut the whole head when mature for a single harvest."
+  },
+  {
+    "name": "Ruby Streaks Mustard",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "21-40",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Fine, maroon mustard leaves; keep cool and pick young outer growth for a mild bite. Baby leaves are ready before full-size plants."
+  },
+  {
+    "name": "Salanova Green Butter Lettuce",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "55",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Butter-type Salanova; keep cool and harvest outer leaves or cut around the core. Listed head-maturity days start at transplant, not sowing."
+  },
+  {
+    "name": "Shungiku",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "16-25",
+    "light_need": "medium",
+    "difficulty": "medium",
+    "guide": "Grow as tray microgreens with even moisture and good airflow. Cut above the medium when the first true leaves emerge; timing is for microgreens."
+  },
+  {
+    "name": "Sorrel",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "40-60",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Tart green sorrel; snip young outer leaves and leave the crown to regrow. Cut flower stalks to prolong leaf production and keep it compact."
+  },
+  {
+    "name": "Wasabi Greens",
+    "category": "leafy-green/lettuce",
+    "days_to_harvest": "45",
+    "light_need": "medium",
+    "difficulty": "easy",
+    "guide": "Spicy mustard greens; keep cool and pick outer leaves young for a milder bite. Leave the center intact and harvest flowers as they open."
+  }
+]

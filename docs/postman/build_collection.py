@@ -241,13 +241,13 @@ current = [
     ),
     folder(
         "Pods",
-        "Per-pod name and shape code, plus the bundled plant catalog (app/lib/plants.json).",
+        "Per-pod name and shape code, plus the plant catalog: bundled app/lib/plants.json, then valid entries from the optional custom file (PLANTS_CUSTOM_FILE, default app/lib/plants-custom.json).",
         [
             req(
                 "Get pods and catalog",
                 "GET",
                 "/pods",
-                "`pods` (30), `shapes`, `catalog` (108 entries; example trimmed to 2).",
+                "`pods` (30), `shapes`, `catalog` (108 bundled entries, then valid custom ones; example trimmed to 2), `catalog_problems` (skipped custom entries and why; [] when clean).",
                 ex="pods",
             ),
             req(
