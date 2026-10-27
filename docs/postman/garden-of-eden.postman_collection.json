@@ -1,0 +1,1778 @@
+{
+  "info": {
+    "_postman_id": "cb509df7-368b-531e-aa58-3be16959eee8",
+    "name": "garden-of-eden API (gardyn-home3)",
+    "description": "REST API of the garden-of-eden firmware on the Gardyn Home 3.0, fork `grrretchen/garden-of-eden` branch `gardyn-home3`, generated against commit b0413fa (2026-10-27).\n\n**Auth:** with GARDEN_API_KEY set, every request except `/`, `/health` and `/static` needs the `X-API-Key` header (collection auth uses `{{apiKey}}`). Requests from the Pi itself skip the check.\n\n**Folders:** `v1 current` is what the device serves today. `Proposed` holds the planned endpoints (404 today), for planning the next version.\n\n⚠ Requests in Pump and some in Light change real hardware.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://gardyn.lan:5000"
+    }
+  ],
+  "item": [
+    {
+      "id": "116a7a83-e74f-5d67-a74c-55f47f5fb439",
+      "name": "v1 current (b0413fa)",
+      "description": "What the device serves today.",
+      "item": [
+        {
+          "id": "5f9285ea-5813-532e-88ec-6706603ad218",
+          "name": "Health and system",
+          "description": "No hardware access.",
+          "item": [
+            {
+              "id": "1cd6dc48-8a5c-59e1-aa84-e0877ce96247",
+              "name": "Health",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                },
+                "description": "Liveness. Never needs a key.",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
+                    },
+                    "description": "Liveness. Never needs a key.",
+                    "auth": {
+                      "type": "noauth"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"ok\"\n}"
+                }
+              ]
+            },
+            {
+              "id": "d821ffe6-5fed-5f4c-8f45-2ecf5b4ee97d",
+              "name": "System info",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/system",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system"
+                  ]
+                },
+                "description": "Identity, model profile, sensor type, water-low threshold, pump cap, default pump speed (fork)."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/system",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system"
+                      ]
+                    },
+                    "description": "Identity, model profile, sensor type, water-low threshold, pump cap, default pump speed (fork)."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"default_pump_speed\": 60,\n  \"identifier\": \"gardyn_home3\",\n  \"model\": \"gardyn 3.0\",\n  \"profile\": {\n    \"cameras\": 2,\n    \"temp_humidity\": \"DHT20\"\n  },\n  \"pump_max_run_seconds\": 900,\n  \"sensor_type\": \"DHT20\",\n  \"version\": \"1.0.0\",\n  \"water_low_cm\": 17.8\n}"
+                }
+              ]
+            },
+            {
+              "id": "f31fef1a-add9-599e-a79c-ba71a369889f",
+              "name": "Dashboard page",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                },
+                "description": "The on-device web page (HTML). Never needs a key.",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "d2e47217-4869-54e9-bb53-74396dc796b1",
+          "name": "Sensors",
+          "description": "Read-only.",
+          "item": [
+            {
+              "id": "72229e28-7c91-5001-a7b7-29264b250a4c",
+              "name": "Air temperature",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/temperature",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "temperature"
+                  ]
+                },
+                "description": "DHT20, °C."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/temperature",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "temperature"
+                      ]
+                    },
+                    "description": "DHT20, °C."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"temperature\": 21.7\n}"
+                }
+              ]
+            },
+            {
+              "id": "0fa29965-e67e-561e-b648-1e977a15d913",
+              "name": "Humidity",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/humidity",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "humidity"
+                  ]
+                },
+                "description": "DHT20, % RH."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/humidity",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "humidity"
+                      ]
+                    },
+                    "description": "DHT20, % RH."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"humidity\": 82.95\n}"
+                }
+              ]
+            },
+            {
+              "id": "733d7ee7-bf4f-5181-8ada-cf7980b04b61",
+              "name": "PCB temperature",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pcb-temp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pcb-temp"
+                  ]
+                },
+                "description": "PCT2075, °C."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/pcb-temp",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "pcb-temp"
+                      ]
+                    },
+                    "description": "PCT2075, °C."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"pcb-temp\": 32.88\n}"
+                }
+              ]
+            },
+            {
+              "id": "6d2cdaac-7bbd-5720-9d73-1e29d27cd17e",
+              "name": "Water level",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/distance",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "distance"
+                  ]
+                },
+                "description": "Fork: the latest reading recorded by the MQTT service (cm from the sensor to the water, gallons, age). 503 if missing or older than 3 × WATER_CHECK_SECONDS. `/distance/measure` is an alias."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/distance",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "distance"
+                      ]
+                    },
+                    "description": "Fork: the latest reading recorded by the MQTT service (cm from the sensor to the water, gallons, age). 503 if missing or older than 3 × WATER_CHECK_SECONDS. `/distance/measure` is an alias."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"age_seconds\": 24,\n  \"distance\": 15.02,\n  \"gallons\": 2.4,\n  \"measured_at\": 1793114113.5896118\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "48697df6-7a8a-5e41-9a7d-7b18aaffbcbe",
+          "name": "Light",
+          "description": "Grow lights, GPIO18 PWM. Levels are 0–100.",
+          "item": [
+            {
+              "id": "e7bbd422-1c45-5c3c-9e13-9c2c8f9a3867",
+              "name": "Get brightness",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/light/brightness",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "light",
+                    "brightness"
+                  ]
+                },
+                "description": "Read from the pin (true even after cron changes)."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/light/brightness",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "light",
+                        "brightness"
+                      ]
+                    },
+                    "description": "Read from the pin (true even after cron changes)."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"value\": 30.0\n}"
+                }
+              ]
+            },
+            {
+              "id": "8573afb5-81ad-5c7f-90fe-d4a24e0e65f6",
+              "name": "Set brightness",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/light/brightness",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "light",
+                    "brightness"
+                  ]
+                },
+                "description": "`value` 0–100; 400 if out of range. Saves state.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": 30\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "2bac0134-86a2-58fe-abdc-5411839d72c1",
+              "name": "Light on",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/light/on",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "light",
+                    "on"
+                  ]
+                },
+                "description": "Full brightness (100) if currently off; no change if already on."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "2f3591a6-4ddb-505b-917d-8d1541a7e202",
+              "name": "Light off",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/light/off",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "light",
+                    "off"
+                  ]
+                },
+                "description": "Off now. The next scheduled ramp turns it back on."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "4015a55c-0116-5b57-91d5-7845ac1fcf57",
+          "name": "Pump",
+          "description": "⚠ Runs the real pump. Only with water in the tank. Levels are 0–100.",
+          "item": [
+            {
+              "id": "6de0b686-e50c-565f-8bc7-c3cd07ede4a8",
+              "name": "Get speed",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pump/speed",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pump",
+                    "speed"
+                  ]
+                },
+                "description": "Current duty; 0 when stopped."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/pump/speed",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "pump",
+                        "speed"
+                      ]
+                    },
+                    "description": "Current duty; 0 when stopped."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"value\": 0.0\n}"
+                }
+              ]
+            },
+            {
+              "id": "53601705-3e94-54ca-987b-6d8c2f0e79fd",
+              "name": "Set speed",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/pump/speed",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pump",
+                    "speed"
+                  ]
+                },
+                "description": "⚠ Runs the real pump. Only with water in the tank. Starts the pump at `value` %.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": 60\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "53663b15-60b6-50bb-ab9e-f4bcd7faeb23",
+              "name": "Pump on",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pump/on",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pump",
+                    "on"
+                  ]
+                },
+                "description": "⚠ Runs the real pump. Only with water in the tank. Runs at **100 %** (upstream behaviour), with the MAX_PUMP_RUN_SECONDS safety cut-off."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "d388777e-a344-5079-b39d-cc70204fe5dd",
+              "name": "Pump off",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pump/off",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pump",
+                    "off"
+                  ]
+                },
+                "description": "Stops the pump."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "69e75b34-f95f-57f1-85cc-36afa0f78391",
+              "name": "Run for seconds",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/pump/run",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pump",
+                    "run"
+                  ]
+                },
+                "description": "⚠ Runs the real pump. Only with water in the tank. Runs at **100 %** for `seconds` (1–MAX_PUMP_RUN_SECONDS; default is the cap, 900). Returns at once.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"seconds\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "ab814eb1-3b7c-5ce3-b51e-0f937ae13ff9",
+              "name": "Pump power stats",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pump/stats",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pump",
+                    "stats"
+                  ]
+                },
+                "description": "INA219 readings. **Broken on the Zero 2 W** (503: pi-ina219 can't find the I2C bus)."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 503\", () => pm.response.to.have.status(503));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (503)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/pump/stats",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "pump",
+                        "stats"
+                      ]
+                    },
+                    "description": "INA219 readings. **Broken on the Zero 2 W** (503: pi-ina219 can't find the I2C bus)."
+                  },
+                  "status": "Error",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"error\": \"Pump hardware unavailable: Could not determine default I2C bus for platform.\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "d567488e-a607-5ce9-856b-052288073bbe",
+          "name": "Schedule",
+          "description": "Stored as JSON (~/.garden_schedule.json) and compiled into the crontab. HA's sync automation overwrites changes made here (see the proposal).",
+          "item": [
+            {
+              "id": "3a57c28f-2e29-5f4b-81eb-ae63ebce9e2c",
+              "name": "Get schedule",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule"
+                  ]
+                },
+                "description": "Normalized per-day schedule."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/schedule",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "schedule"
+                      ]
+                    },
+                    "description": "Normalized per-day schedule."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"lights\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"mon\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sat\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sun\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"thu\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"tue\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"wed\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"pump\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"mon\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sat\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sun\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"thu\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"tue\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"wed\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"vacation\": {\n    \"enabled\": false,\n    \"until\": \"2026-11-09\"\n  }\n}"
+                }
+              ]
+            },
+            {
+              "id": "0d4d7e25-aec6-5701-9c96-805dd2777238",
+              "name": "Set schedule",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule"
+                  ]
+                },
+                "description": "Replaces the whole schedule and rewrites the crontab. ⚠ HA will push its own copy back within seconds. Body below is the current schedule.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lights\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"mon\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sat\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sun\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"thu\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"tue\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"wed\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"pump\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"mon\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sat\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sun\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"thu\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"tue\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"wed\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"vacation\": {\n    \"enabled\": false,\n    \"until\": \"2026-11-09\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "51528ac0-1da7-5f51-8e88-f34dd421de00",
+          "name": "Grow cycle",
+          "description": "Grow-cycle reminders are disabled on this device (*_REMINDER_DAYS=0); CropOps owns reminders.",
+          "item": [
+            {
+              "id": "756fb69f-49ba-58a8-95b2-cb89f19cf175",
+              "name": "Get grow state",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/grow",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "grow"
+                  ]
+                },
+                "description": "Stage, start time, due and acknowledged reminders."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/grow",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "grow"
+                      ]
+                    },
+                    "description": "Stage, start time, due and acknowledged reminders."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"acknowledged\": [],\n  \"due\": [],\n  \"stage\": \"germination\",\n  \"started\": \"2026-10-26T21:32:28.985324\"\n}"
+                }
+              ]
+            },
+            {
+              "id": "cec85f13-cf38-5ecf-8055-66c759c45999",
+              "name": "Start cycle",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/grow/start",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "grow",
+                    "start"
+                  ]
+                },
+                "description": "Resets the cycle start to now. The page's Germinate preset calls this."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "3dae559e-0570-5d33-a10e-805711d9487d",
+              "name": "Set stage",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/grow/stage",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "grow",
+                    "stage"
+                  ]
+                },
+                "description": "One of germination, thinning, root_check, harvest.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"stage\": \"germination\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "0c17bfc7-372b-5def-94f0-efa7a47cc21a",
+              "name": "Acknowledge reminder",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/grow/acknowledge",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "grow",
+                    "acknowledge"
+                  ]
+                },
+                "description": "Key: thinning, root_check, harvest, nutrient.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key\": \"nutrient\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0b76adc4-7dd5-580c-b571-ca4a80152381",
+          "name": "Pods",
+          "description": "Per-pod name and shape code, plus the bundled plant catalog (app/lib/plants.json).",
+          "item": [
+            {
+              "id": "6aef10c2-db1e-5432-941c-24ac275018e7",
+              "name": "Get pods and catalog",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/pods",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pods"
+                  ]
+                },
+                "description": "`pods` (30), `shapes`, `catalog` (108 entries; example trimmed to 2)."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ],
+              "response": [
+                {
+                  "name": "gardyn_home3 2026-10-27 (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/pods",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "pods"
+                      ]
+                    },
+                    "description": "`pods` (30), `shapes`, `catalog` (108 entries; example trimmed to 2)."
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"catalog\": [\n    {\n      \"category\": \"brassica/kale\",\n      \"days_to_harvest\": \"60-70\",\n      \"difficulty\": \"medium\",\n      \"guide\": \"Thin to one strong seedling; harvest outer leaves once 8-10 in and let the center keep producing. Steady moderate light and cool temps keep leaves tender.\",\n      \"light_need\": \"medium\",\n      \"name\": \"Collard Greens\"\n    },\n    {\n      \"category\": \"brassica/kale\",\n      \"days_to_harvest\": \"55-65\",\n      \"difficulty\": \"medium\",\n      \"guide\": \"Pick lower outer leaves first, leaving the crown to regrow for repeat harvests. Watch for aphids; rinse leaves and remove any yellowing growth.\",\n      \"light_need\": \"medium\",\n      \"name\": \"Curly Kale\"\n    }\n  ],\n  \"pods\": [\n    {\n      \"id\": 1,\n      \"name\": \"Thyme\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Thyme\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Oregano\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Bunching Onions\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 5,\n      \"name\": \"American Mustard\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Lacinato Kale\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Chamomile\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 8,\n      \"name\": \"Stock Flower\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 9,\n      \"name\": \"American Mustard\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 10,\n      \"name\": \"Green Salanova Lettuce\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 11,\n      \"name\": \"Petunia\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 12,\n      \"name\": \"\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 13,\n      \"name\": \"\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 14,\n      \"name\": \"Celosia Lettuce\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 15,\n      \"name\": \"Bronze Arrow\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 16,\n      \"name\": \"Butterhead Lettuce\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 17,\n      \"name\": \"Purple Snapdragon\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 18,\n      \"name\": \"\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 19,\n      \"name\": \"Kapoor Tulsi\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 20,\n      \"name\": \"Genovese Basil\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 21,\n      \"name\": \"Calendula\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 22,\n      \"name\": \"Yellow Swiss Chard\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 23,\n      \"name\": \"Kapoor Tulsi\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 24,\n      \"name\": \"\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 25,\n      \"name\": \"Cecilia Lettuce\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 26,\n      \"name\": \"Green Bok Choy\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 27,\n      \"name\": \"Lemon Balm\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 28,\n      \"name\": \"Arugula\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 29,\n      \"name\": \"Arugula\",\n      \"symbols\": []\n    },\n    {\n      \"id\": 30,\n      \"name\": \"Cilantro\",\n      \"symbols\": []\n    }\n  ],\n  \"shapes\": [\n    \"circle\",\n    \"square\",\n    \"triangle\",\n    \"diamond\",\n    \"star\",\n    \"hexagon\",\n    \"heart\",\n    \"plus\"\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "id": "68b3e032-4ee7-5e8d-8220-75bd70621532",
+              "name": "Set one pod",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/pods/25",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pods",
+                    "25"
+                  ]
+                },
+                "description": "Name and/or symbols for one pod; returns all pods.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Cecelia Lettuce\",\n  \"symbols\": [\n    \"circle\",\n    \"square\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "472dd25e-b98d-5dbc-af83-421bc067ce2b",
+              "name": "Replace all pods",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/pods",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pods"
+                  ]
+                },
+                "description": "Whole list. ⚠ Overwrites every pod; missing ids become empty.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"id\": 1,\n    \"name\": \"Thyme\",\n    \"symbols\": []\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "8f8c45e1-8faa-539e-92d9-769e36de746d",
+          "name": "Cameras",
+          "description": "Captures take about 1 s each. Responses are JPEG/MP4.",
+          "item": [
+            {
+              "id": "008914cd-a475-5dfe-ae1c-4419683f0084",
+              "name": "Upper camera",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/camera/upper",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "camera",
+                    "upper"
+                  ]
+                },
+                "description": "Fresh JPEG from /dev/gardyn-upper."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "1b348cc2-48a0-5d25-b8b7-9dc5116a80b6",
+              "name": "Lower camera",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/camera/lower",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "camera",
+                    "lower"
+                  ]
+                },
+                "description": "Fresh JPEG from /dev/gardyn-lower."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "b9135306-87db-5c0c-a782-0e909d329156",
+              "name": "Get timelapse",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/camera/timelapse/upper",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "camera",
+                    "timelapse",
+                    "upper"
+                  ]
+                },
+                "description": "MP4; 404 until one is built."
+              }
+            },
+            {
+              "id": "4c7afcd5-d543-5354-9995-2331fd36bcbb",
+              "name": "Build timelapse",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/camera/timelapse/upper",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "camera",
+                    "timelapse",
+                    "upper"
+                  ]
+                },
+                "description": "Assembles archived frames into MP4 (can take a minute)."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca141edf-6913-5b76-8996-5199c5764d15",
+      "name": "Proposed (next version)",
+      "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. ",
+      "item": [
+        {
+          "id": "196e5887-0d3a-5405-8c95-0a70b8641313",
+          "name": "1. Schedule revisions (two editors)",
+          "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Adds `meta` {revision, updated_at, updated_by, preset_id, modified} to GET /schedule; MQTT retained `gardyn/schedule/state`.",
+          "item": [
+            {
+              "id": "32743f8f-2283-546c-94eb-694b1b55b59e",
+              "name": "Set schedule (If-Match)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "If-Match",
+                    "value": "42"
+                  },
+                  {
+                    "key": "X-Client",
+                    "value": "ha"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Same body as today plus headers. A stale `If-Match` revision returns 409 with the current schedule. `X-Client` is recorded as `meta.updated_by`.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lights\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"mon\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sat\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"sun\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"thu\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"tue\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ],\n      \"wed\": [\n        {\n          \"brightness\": 30,\n          \"offTime\": \"20:00\",\n          \"onTime\": \"05:00\",\n          \"rampMinutes\": 15\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"pump\": {\n    \"days\": {\n      \"fri\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"mon\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sat\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"sun\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"thu\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"tue\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ],\n      \"wed\": [\n        {\n          \"duration\": 3,\n          \"time\": \"05:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"12:00\"\n        },\n        {\n          \"duration\": 3,\n          \"time\": \"19:00\"\n        }\n      ]\n    },\n    \"enabled\": true\n  },\n  \"vacation\": {\n    \"enabled\": false,\n    \"until\": \"2026-11-09\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "068b92ca-fc21-5351-9562-55e43eaafa6d",
+              "name": "Patch lights only",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "If-Match",
+                    "value": "42"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule/lights",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule",
+                    "lights"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Change one section without resending the rest.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"days\": {\n    \"mon\": [\n      {\n        \"onTime\": \"05:00\",\n        \"offTime\": \"20:00\",\n        \"brightness\": 30,\n        \"rampMinutes\": 15\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "4d7cbf5a-4cf0-5735-a4de-ffc7f1af2c0e",
+          "name": "2. Presets",
+          "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Built-ins move from the page's JS into app/lib/presets.json (read-only); custom presets in ~/.garden_presets.json. Responses include photoperiod_h, boost_equivalent_h, dark_h, pump_min_per_day.",
+          "item": [
+            {
+              "id": "0d862b50-b331-59a5-bcf3-9bb3f897808f",
+              "name": "List presets",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule/presets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule",
+                    "presets"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. "
+              }
+            },
+            {
+              "id": "ae2915b3-5162-51f2-b3c8-bff269a75b22",
+              "name": "Save custom preset",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule/presets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule",
+                    "presets"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Or `{\"from_current\": true, \"name\": ...}` to save the active schedule.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Early Germinate\",\n  \"description\": \"Germinate an hour earlier; off by 20:00\",\n  \"stage\": \"germinate\",\n  \"every_day\": true,\n  \"lights\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"onTime\": \"05:00\",\n          \"offTime\": \"20:00\",\n          \"brightness\": 30,\n          \"rampMinutes\": 15\n        }\n      ]\n    }\n  },\n  \"pump\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"time\": \"05:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"12:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"19:00\",\n          \"duration\": 3\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "853883c5-a4be-5a02-97d1-3551c84658ed",
+              "name": "Edit custom preset",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule/presets/custom-early-germinate",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule",
+                    "presets",
+                    "custom-early-germinate"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. 403 for built-ins.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Early Germinate\",\n  \"description\": \"Germinate an hour earlier; off by 20:00\",\n  \"stage\": \"germinate\",\n  \"every_day\": true,\n  \"lights\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"onTime\": \"05:00\",\n          \"offTime\": \"20:00\",\n          \"brightness\": 30,\n          \"rampMinutes\": 15\n        }\n      ]\n    }\n  },\n  \"pump\": {\n    \"days\": {\n      \"mon\": [\n        {\n          \"time\": \"05:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"12:00\",\n          \"duration\": 3\n        },\n        {\n          \"time\": \"19:00\",\n          \"duration\": 3\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "0ea05655-74cd-56de-85c7-acf9b41428dc",
+              "name": "Delete custom preset",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule/presets/custom-early-germinate",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule",
+                    "presets",
+                    "custom-early-germinate"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. 403 for built-ins."
+              }
+            },
+            {
+              "id": "18fb7cb4-6ecc-5226-87b8-6ffae8294792",
+              "name": "Apply preset",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Client",
+                    "value": "ha"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule/presets/custom-early-germinate/apply",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule",
+                    "presets",
+                    "custom-early-germinate",
+                    "apply"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Sets meta.preset_id and modified=false."
+              }
+            },
+            {
+              "id": "3a5ec034-d717-5b47-9411-21181db7a1fd",
+              "name": "Calendar feed (ICS)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/schedule.ics",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "schedule.ics"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Read-only: next 14 days of light windows and pump runs as VEVENTs, for calendar display."
+              }
+            }
+          ]
+        },
+        {
+          "id": "c6c36b57-db6d-5dfb-b200-8461ae58c411",
+          "name": "3. Plants and pods",
+          "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. plants.json entries gain optional plant_code, source, source_url, scientific_name, family, harvest_style, light_zone, weeks{}, needs_review. A local overlay (~/.garden_plants.json) from the CropOps PlantAttributes export is merged over the bundled catalog.",
+          "item": [
+            {
+              "id": "34f9be43-94b7-5fee-b28e-ee3c7a10c9ad",
+              "name": "Get merged catalog",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/plants",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "plants"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Each entry tagged origin: bundled | local."
+              }
+            },
+            {
+              "id": "615a8388-632e-5fa4-b428-316825ef2fe1",
+              "name": "Replace local overlay",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/plants/local",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "plants",
+                    "local"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Written by the CropOps export (the Sheet is the master).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"plant_code\": \"cecelia_lettuce\",\n    \"name\": \"Cecelia Lettuce\",\n    \"category\": \"lettuce\",\n    \"source\": \"johnnys\",\n    \"scientific_name\": \"Lactuca sativa\",\n    \"family\": \"Asteraceae\",\n    \"harvest_style\": \"cut_and_come_again\",\n    \"light_zone\": \"medium\",\n    \"weeks\": {\n      \"germinate\": 1,\n      \"thin\": 2,\n      \"maturity\": 6,\n      \"harvest\": 6,\n      \"replace\": 9,\n      \"retire\": 12\n    },\n    \"needs_review\": true\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "107b1781-3808-55fe-b39b-90023b3fcb27",
+              "name": "Patch one pod",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/pods/25",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pods",
+                    "25"
+                  ]
+                },
+                "description": "**Proposed, not implemented: 404 today.** See code.gardyn docs/proposal-schedules-presets-plants.md. Partial update; new optional fields.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"plant_code\": \"cecelia_lettuce\",\n  \"sown_on\": \"2026-10-26\",\n  \"slot_code\": \"C3.4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
