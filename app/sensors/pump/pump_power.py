@@ -11,11 +11,15 @@ import config
 
 SHUNT_OHMS = 0.08
 INA219_ADDRESS = config.INA219_ADDRESS
+# The Pi's I2C bus. Passed to INA219 explicitly: its own bus detection
+# (Adafruit_GPIO) does not recognise the Zero 2 W and raises
+# "Could not determine default I2C bus for platform".
+I2C_BUS = 1
 
 
 def is_ina219_present(address):
     try:
-        bus = smbus.SMBus(1)  # Use SMBus(0) for older versions of Raspberry Pi
+        bus = smbus.SMBus(I2C_BUS)
         bus.read_byte_data(address, 0)  # Try to read a byte from the specified address
         return True  # If no exception is raised, the device is present
     except Exception:
@@ -26,7 +30,7 @@ def fetch_ina219_data():
     data = {}
     if is_ina219_present(INA219_ADDRESS):  # Check if the INA219 is present
         try:
-            ina = INA219(SHUNT_OHMS, address=INA219_ADDRESS)
+            ina = INA219(SHUNT_OHMS, busnum=I2C_BUS, address=INA219_ADDRESS)
             ina.configure()
             time.sleep(1)
             data = {
