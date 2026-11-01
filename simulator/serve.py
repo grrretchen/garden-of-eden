@@ -48,7 +48,7 @@ _PLACEHOLDER_JPEG = base64.b64decode(
 )
 
 
-def _fake_capture(device, output_path, resolution=None):
+def _fake_capture(device, output_path, resolution=None, skip=2, pixel_format=None):
     with open(output_path, "wb") as fh:
         fh.write(_PLACEHOLDER_JPEG)
     return output_path
