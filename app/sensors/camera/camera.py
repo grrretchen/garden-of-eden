@@ -16,7 +16,7 @@ import config
 logger = logging.getLogger(__name__)
 
 
-def capture(device, output_path, resolution=None):
+def capture(device, output_path, resolution=None, skip=2, pixel_format=None):
     """Capture a single frame from ``device`` to ``output_path``.
 
     Returns the output path on success, or raises CalledProcessError/OSError.
@@ -30,20 +30,22 @@ def capture(device, output_path, resolution=None):
         "-r",
         resolution,
         "-S",
-        "2",  # skip initial frames so exposure settles
+        str(skip),  # skip initial frames so exposure settles
         output_path,
     ]
+    if pixel_format is not None:
+        cmd[1:1] = ["-p", pixel_format]
     logger.info("Capturing image from %s -> %s", device, output_path)
     subprocess.run(cmd, capture_output=True, check=True)
     return output_path
 
 
-def capture_upper():
-    return capture(config.UPPER_CAMERA_DEVICE, config.UPPER_IMAGE_PATH)
+def capture_upper(**kwargs):
+    return capture(config.UPPER_CAMERA_DEVICE, config.UPPER_IMAGE_PATH, **kwargs)
 
 
-def capture_lower():
-    return capture(config.LOWER_CAMERA_DEVICE, config.LOWER_IMAGE_PATH)
+def capture_lower(**kwargs):
+    return capture(config.LOWER_CAMERA_DEVICE, config.LOWER_IMAGE_PATH, **kwargs)
 
 
 # --- Timelapse: archive frames over time, assemble into mp4 with ffmpeg --------
